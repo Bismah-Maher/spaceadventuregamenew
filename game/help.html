@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help | Cosmic Warfare</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary-glow: #00ffff;
+    --accent-glow: #ffcc00;
+    --magenta-glow: #ff00ff;
+    --bg-dark: #020204;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at 50% 30%, #2a0a3a 0%, #100020 40%, #000 100%);
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+}
+
+
+body::before {
+    width: 600px;
+    height: 600px;
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, #00d2ff 0%, rgba(0, 210, 255, 0) 70%);
+    filter: blur(50px);
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.stars {
+    position: absolute;
+    width: 100%; height: 100%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px);
+    background-size: 500px 500px, 300px 300px;
+    z-index: 2;
+}
+
+.shooting-star {
+    position: absolute;
+    top: 10%;
+    left: 70%;
+    width: 2px;
+    height: 2px;
+    background: white;
+    box-shadow: 0 0 20px white;
+    animation: shoot 5s linear infinite;
+}
+
+
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    z-index: 100;
+    position: relative;
+}
+
+.header-logo {
+    font-family: 'Orbitron';
+    font-size: 24px;
+    font-weight: 900;
+}
+
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    font-family: 'Orbitron';
+}
+
+.nav-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-glow);
+    text-shadow: 0 0 5px var(--primary-glow);
+}
+
+.login-btn {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+
+.title {
+    text-align: center;
+    font-family: 'Orbitron';
+    font-size: 60px;
+    margin-top: 40px;
+    text-shadow: 0 0 20px var(--primary-glow);
+}
+
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    z-index: 5;
+    position: relative;
+}
+
+
+.card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    margin-bottom: 20px;
+    padding: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 0 20px var(--magenta-glow);
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    font-family: 'Orbitron';
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.card p {
+    margin-top: 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.4s;
+    opacity: 0.8;
+}
+
+.card.active p {
+    max-height: 200px;
+}
+
+.arrow {
+    transition: 0.3s;
+}
+
+.card.active .arrow {
+    transform: rotate(180deg);
+}
+
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    border-top: 1px solid var(--primary-glow);
+    color: #aaa;
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+<div class="shooting-star"></div>
+
+<header class="header">
+    <div class="header-logo"><span>★</span> SPACE ADVENTURES</div>
+
+    <nav class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="adventure.html">ADVENTURE</a>
+        <a href="game.html">GAMES</a>
+        <a href="help.html" class="active">HELP</a>
+    </nav>
+
+    <button class="login-btn">LOGIN</button>
+</header>
+
+<h1 class="title">HELP & GUIDE</h1>
+
+<div class="container">
+
+    <div class="card">
+        <h3> Controls <span class="arrow">▼</span></h3>
+        <p>
+            Use Arrow Keys (↑ ↓ ← →) to move your character.<br>
+            Press SPACE or click mouse to shoot enemies.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3> Enemies <span class="arrow">▼</span></h3>
+        <p>
+            Enemies come in different speeds and attack styles.<br>
+            Some chase you, others attack from distance.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3> Weapons <span class="arrow">▼</span></h3>
+        <p>
+            Upgrade bullets into black flames for higher damage.<br>
+            Faster attacks increase survival chances.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3> Tips & Tricks <span class="arrow">▼</span></h3>
+        <p>
+            Keep moving constantly.<br>
+            Learn enemy patterns.<br>
+            Dodge first, attack second.
+        </p>
+    </div>
+
+</div>
+
+<audio id="bg-music" loop>
+  <source src="drumm.mp3" type="audio/mpeg">
+</audio>
+
+
+
+
+<script>
+
+    function goToAdventure() {
+  localStorage.setItem("playMusic", "true");
+}
+
+const music = document.getElementById("bg-music");
+
+
+music.play().catch(() => {
+  console.log("Autoplay blocked");
+});
+
+
+document.addEventListener("click", () => {
+  music.play();
+  console.log("Music started after click");
+}, { once: true });
+
+
+document.querySelectorAll(".card").forEach(card => {
+    card.addEventListener("click", () => {
+        card.classList.toggle("active");
+    });
+});
+</script>
+
+</body>
+</html>

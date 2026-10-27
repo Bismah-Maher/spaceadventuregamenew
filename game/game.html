@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosmic Warfare | Games</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary-glow: #00ffff;
+    --accent-glow: #ffcc00;
+    --magenta-glow: #ff00ff;
+    --bg-dark: #020204;
+    --glass: rgba(255,255,255,0.05);
+    --glass-border: rgba(255,255,255,0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: radial-gradient(circle at 50% 30%, #2a0a3a 0%, #100020 40%, #000 100%);
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+}
+
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, #00d2ff 0%, transparent 70%);
+    filter: blur(50px);
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+        radial-gradient(white, rgba(255,255,255,.1) 1px, transparent 2px);
+    background-size: 500px 500px, 300px 300px;
+    z-index: 2;
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    z-index: 100;
+    position: relative;
+}
+
+.header-logo {
+    font-family: 'Orbitron';
+    font-size: 24px;
+    font-weight: 900;
+}
+
+
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    font-family: 'Orbitron';
+}
+
+.nav-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-glow);
+    text-shadow: 0 0 5px var(--primary-glow);
+}
+
+.login-btn {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+
+.section-title {
+    text-align: center;
+    font-family: 'Orbitron';
+    font-size: 50px;
+    margin-top: 40px;
+    text-shadow: 0 0 20px var(--primary-glow);
+}
+
+
+.games-container {
+    padding: 40px 10%;
+    position: relative;
+    z-index: 5;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.game-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.game-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 0 25px var(--magenta-glow);
+}
+
+
+.image-wrapper img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    filter: brightness(0.8);
+}
+
+
+.card-info {
+    padding: 15px;
+}
+
+.card-info h3 {
+    font-family: 'Orbitron';
+    margin-bottom: 10px;
+}
+
+.play-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-family: 'Orbitron';
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.play-btn:hover {
+    letter-spacing: 2px;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+</style>
+</head>
+
+<body>
+
+
+
+<header class="header">
+    <div class="header-logo"><span>★</span> SPACE ADVENTURES</div>
+
+    <nav class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="adventure.html">ADVENTURE</a>
+        <a href="game.html"class="active">GAMES</a>
+        <a href="help.html" >HELP</a>
+    </nav>
+
+    <button class="login-btn">LOGIN</button>
+</header>
+
+<h1 class="section-title">DOWNLOAD MORE GAMES</h1>
+
+<main class="games-container">
+    <div class="games-grid">
+
+        <div class="game-card">
+            <div class="image-wrapper">
+                <img src="battle.jpg">
+            </div>
+            <div class="card-info">
+                <h3>GALACTIC RACE</h3><br>
+                <button class="play-btn">FREE DOWNLOAD</button>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <div class="image-wrapper">
+                <img src="flight.jpg">
+            </div>
+            <div class="card-info">
+                <h3>STARFIRE FLIGHT</h3><br>
+                <button class="play-btn">FREE DOWNLOAD</button>
+            </div>
+        </div>
+
+
+        <div class="game-card">
+            <div class="image-wrapper">
+                <img src="cyborgbattle.jpg">
+            </div>
+            <div class="card-info">
+                <h3>CYBORG BATTLE</h3><br>
+                <button class="play-btn">FREE DOWNLOAD</button>
+            </div>
+        </div>
+
+        
+        <div class="game-card">
+            <div class="image-wrapper">
+                <img src="ravenrealm.jpg">
+            </div>
+            <div class="card-info">
+                <h3>RAVEN'S REALM</h3><br>
+                <button class="play-btn">RS. 5999</button>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<audio id="bg-music" loop>
+  <source src="drumm.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById("bg-music");
+
+music.play().catch(()=>{});
+
+document.addEventListener("click", () => {
+    music.play();
+}, { once: true });
+</script>
+
+</body>
+</html>

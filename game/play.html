@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghost Hunter: Deep Space Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* (Your existing CSS remains the same) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #050505; overflow: hidden; font-family: 'Orbitron', sans-serif; color: #fff; }
+        canvas { display: block; }
+        body::after {
+            content: " "; display: block; position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 10; background-size: 100% 3px, 3px 100%; pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="gameCanvas"></canvas>
+
+<script>
+// --- AUDIO ASSETS ---
+const bgMusic = new Audio("mps.mp3");
+bgMusic.loop = true;
+bgMusic.volume = 0.5;
+
+
+const laserSound = new Audio("pew.mp3");     
+const hitSound = new Audio("hit.mp3");       
+const burstSound = new Audio("pop.mp3");  
+const bossDeathSound = new Audio("blast.mp3"); // When boss dies
+const winSound = new Audio("win.mp3");   // when player wins
+const loseSound = new Audio("lose.mp3"); // when player loses
+
+// Function to play sound clones (allows overlapping sounds)
+function playSound(audio) {
+    const clone = audio.cloneNode();
+    clone.volume = audio.volume;
+    clone.play().catch(() => {});
+}
+
+function startMusic() {
+    if (!bossActive) bgMusic.play().catch(() => {});
+    window.removeEventListener("click", startMusic);
+}
+window.addEventListener("click", startMusic);
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Game Config
+const KILLS_TO_BOSS = 20;
+const BOSS_MINION_INTERVAL = 4000; 
+
+// Visual Assets
+const dinoImg = new Image(); dinoImg.src = "raven1.png";
+const ghostImg = new Image(); ghostImg.src = "Gemini_Generated_Image_i4a8yzi4a8yzi4a8-removebg-preview.png";
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+    constructor(x, y, color) {
+        this.x = x; this.y = y;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 10;
+        this.speedY = (Math.random() - 0.5) * 10;
+        this.color = color; this.alpha = 1;
+    }
+    update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.02; }
+    draw() {
+        ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color;
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+    }
+}
+
+class Boss {
+    constructor() {
+        this.w = 260; this.h = 260;
+        this.x = canvas.width + 100; this.y = canvas.height / 2 - 130;
+        this.targetX = canvas.width - 400; this.targetY = canvas.height / 2;
+        this.hp = 100; this.maxHp = 100;
+        this.lastSpawn = Date.now();
+        this.moveTimer = 0;
+    }
+    update() {
+        this.moveTimer--;
+        if(this.moveTimer <= 0) {
+            this.targetX = (canvas.width / 2) + Math.random() * (canvas.width / 2 - this.w);
+            this.targetY = Math.random() * (canvas.height - this.h);
+            this.moveTimer = 60 + Math.random() * 60;
+        }
+        this.x += (this.targetX - this.x) * 0.05;
+        this.y += (this.targetY - this.y) * 0.05;
+
+        if (Date.now() - this.lastSpawn > BOSS_MINION_INTERVAL) {
+            spawnGhost(this.x, this.y + this.h/2);
+            this.lastSpawn = Date.now();
+        }
+    }
+    draw() {
+        ctx.save();
+        ctx.shadowBlur = 40; ctx.shadowColor = "red";
+        ctx.drawImage(ghostImg, this.x, this.y, this.w, this.h);
+        const barW = 400;
+        const bx = (canvas.width - barW) / 2;
+        ctx.fillStyle = "rgba(255,0,0,0.3)";
+        ctx.fillRect(bx, 40, barW, 20);
+        ctx.fillStyle = "#ff0044";
+        ctx.fillRect(bx, 40, (this.hp/this.maxHp) * barW, 20);
+        ctx.strokeStyle = "white"; ctx.strokeRect(bx, 40, barW, 20);
+        ctx.restore();
+    }
+}
+
+// Game State
+let score = 0, gameOver = false, gameWin = false, shake = 0;
+let ghosts = [], bullets = [], particles = [], stars = [];
+let dino = { x: 50, y: 300, w: 100, h: 100 };
+let keys = {};
+let boss = null, bossActive = false;
+
+function initStars() {
+    stars = [];
+    for(let i=0; i<100; i++) stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*3+1 });
+}
+
+function spawnGhost(startX = canvas.width, startY = Math.random()*(canvas.height-100)) {
+    ghosts.push({ x: startX, y: startY, w: 80, h: 80, hp: 3 });
+}
+
+function shoot() {
+    playSound(laserSound); // Trigger Laser Sound
+    bullets.push({ x: dino.x + 80, y: dino.y + 45 });
+}
+
+window.addEventListener('keydown', e => { 
+    keys[e.key] = true; 
+    if(e.code === "Space" && !gameOver && !gameWin) shoot(); 
+});
+window.addEventListener('keyup', e => keys[e.key] = false);
+
+function update() {
+    if(gameOver || gameWin) return;
+
+    if(keys["ArrowUp"]) dino.y -= 7;
+    if(keys["ArrowDown"]) dino.y += 7;
+    if(keys["ArrowLeft"]) dino.x -= 7;
+    if(keys["ArrowRight"]) dino.x += 7;
+
+    stars.forEach(s => { s.x -= s.s; if(s.x < 0) s.x = canvas.width; });
+
+    // Boss Transition Logic
+    if(score >= KILLS_TO_BOSS && !bossActive) {
+        bossActive = true;
+        boss = new Boss();
+        
+       
+    }
+
+    if(bossActive && boss) {
+        boss.update();
+        bullets.forEach((b, i) => {
+            if(b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
+                boss.hp--; 
+                shake = 10; 
+                bullets.splice(i, 1);
+                playSound(hitSound); // Hit boss sound
+                
+              if(boss.hp <= 0) { 
+    gameWin = true;
+    bgMusic.pause();
+    playSound(bossDeathSound);
+    playSound(winSound);
+}
+            }
+        });
+    }
+
+    // Bullets & Ghosts
+    bullets.forEach((b, i) => {
+        b.x += 12;
+        if(b.x > canvas.width) bullets.splice(i, 1);
+        ghosts.forEach((g, gi) => {
+            if(b.x > g.x && b.x < g.x+g.w && b.y > g.y && b.y < g.y+g.h) {
+                g.hp--; 
+                bullets.splice(i, 1); 
+                playSound(hitSound); // Hit ghost sound
+                
+                if(g.hp <= 0) {
+                    playSound(burstSound); // Ghost burst sound
+                    for(let p=0; p<10; p++) particles.push(new Particle(g.x+40, g.y+40, "white"));
+                    ghosts.splice(gi, 1); 
+                    score++;
+                }
+            }
+        });
+    });
+
+  ghosts.forEach((g, i) => {
+    g.x -= 4;
+
+    if(g.x + g.w < 0 && !gameOver) {
+        gameOver = true;
+        bgMusic.pause();
+        playSound(loseSound);
+    }
+
+    if(dino.x < g.x+g.w-20 && dino.x+dino.w > g.x+20 && dino.y < g.y+g.h-20 && dino.y+dino.h > g.y+20 && !gameOver) {
+        gameOver = true;
+        bgMusic.pause();
+        playSound(loseSound);
+    }
+});
+
+    if(!bossActive && Math.random() < 0.02) spawnGhost();
+    particles.forEach((p, i) => { p.update(); if(p.alpha <= 0) particles.splice(i, 1); });
+}
+
+function draw() {
+    ctx.fillStyle = "#050505";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    if(shake > 0) { ctx.translate(Math.random()*5, Math.random()*5); shake--; }
+
+    ctx.fillStyle = "white";
+    stars.forEach(s => ctx.fillRect(s.x, s.y, s.s, s.s));
+    ctx.shadowBlur = 20; ctx.shadowColor = "#bc13fe";
+    ctx.drawImage(dinoImg, dino.x, dino.y, dino.w, dino.h);
+    ctx.shadowBlur = 0;
+    ghosts.forEach(g => ctx.drawImage(ghostImg, g.x, g.y, g.w, g.h));
+    ctx.fillStyle = "cyan";
+    bullets.forEach(b => ctx.fillRect(b.x, b.y, 25, 4));
+
+    if(bossActive && boss) boss.draw();
+    particles.forEach(p => p.draw());
+    ctx.restore();
+
+    ctx.fillStyle = "cyan";
+    ctx.font = "20px Orbitron";
+    ctx.fillText(`KILLS: ${score} / ${KILLS_TO_BOSS}`, 30, 50);
+    
+    if(gameOver) drawOverlay("MISSION FAILED", "red");
+    if(gameWin) drawOverlay("SECTOR CLEARED", "cyan");
+
+    requestAnimationFrame(() => { update(); draw(); });
+}
+
+function drawOverlay(title, color) {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const boxW = 500;
+    const boxH = 250;
+    const boxX = centerX - boxW / 2;
+    const boxY = centerY - boxH / 2;
+
+    ctx.shadowBlur = 30; ctx.shadowColor = color;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(boxX, boxY, boxW, boxH);
+    ctx.shadowBlur = 15;
+    ctx.fillStyle = color;
+    ctx.textAlign = "center";
+    ctx.font = "bold 50px Orbitron";
+    ctx.fillText(title, centerX, centerY - 20);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = "white";
+    ctx.font = "16px Orbitron";
+    ctx.fillText(`TOTAL KILLS: ${score}`, centerX, centerY + 30);
+    
+    const btnW = 280; const btnH = 40;
+    const btnX = centerX - btnW / 2; const btnY = centerY + 70;
+    ctx.fillStyle = color; ctx.globalAlpha = 0.2;
+    ctx.fillRect(btnX, btnY, btnW, btnH);
+    ctx.globalAlpha = 1.0;
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(btnX, btnY, btnW, btnH);
+    ctx.fillStyle = "white";
+    ctx.font = "14px Orbitron";
+    ctx.fillText("REBOOT SYSTEM  Press F5", centerX, btnY + 25);
+}
+
+initStars();
+draw();
+</script>
+</body>
+</html>

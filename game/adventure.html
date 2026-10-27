@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adventures | Space Adventures</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+    --primary: #00ffff;
+    --magenta: #ff00ff;
+    --bg: #020204;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background: radial-gradient(circle at 50% 30%, #2a0a3a, #000);
+    color: white;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+}
+
+.header-logo {
+    font-family: 'Orbitron';
+    font-weight: 900;
+    font-size: 24px;
+}
+.header-logo span {
+            color: var(--primary-glow);
+            font-size: 30px;
+        }
+.nav-links {
+    display: flex;
+    gap: 30px;
+    font-family: 'Orbitron';
+}
+
+.nav-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.login-btn {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .login-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+
+.title {
+    text-align: center;
+    font-family: 'Orbitron';
+    font-size: 50px;
+    margin: 30px 0;
+}
+
+.title span {
+    color: var(--primary);
+}
+
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 40px 80px;
+}
+.card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 0 25px var(--magenta);
+}
+
+
+
+.lock {
+  position: absolute;
+  top: 10px;    
+  right: 10px; 
+}
+
+
+.card-link {
+    display: block;
+    height: 100%;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+
+.card img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+}
+
+
+.card {
+    overflow: hidden;
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.card h3 {
+    font-family: 'Orbitron';
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.level {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-family: 'Orbitron';
+}
+
+.card {
+    animation: float 5s ease-in-out infinite;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0); }
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-logo"><span>★</span> SPACE ADVENTURES</div>
+
+    <nav class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="adventure.html" class="active">ADVENTURES</a>
+        <a href="game.html">GAMES</a>
+        <a href="help.html">HELP</a>
+    </nav>
+
+    <button class="login-btn">LOGIN</button>
+</header>
+
+<h1 class="title">CHOOSE YOUR <span>MISSION</span></h1>
+
+<div class="cards-container">
+
+
+<div class="card">
+    <a href="play.html" class="card-link">
+
+        <span class="level">LEVEL 1</span>
+        <img src="669041276_26607873165511408_684598182663577420_n.jpg" alt="raven">
+
+        <div class="card-content">
+            <h3>Shadow Awakening</h3>
+            <p>Help Raven defeat dark spirits and unlock hidden powers.</p>
+        </div>
+
+    </a>
+</div>
+
+
+<div class="card">
+    <span class="level">LEVEL 2</span>
+     <span class="lock">🔒</span>
+    <img src="675268959_956042540647372_8034194693973810098_n.jpg">
+    <div class="card-content">
+        <h3>Starfire Fury</h3>
+        <p>Assist Starfire in blasting enemies across the galaxy.</p>
+    </div>
+</div>
+
+
+<div class="card">
+    <span class="level">LEVEL 3</span>
+     <span class="lock">🔒</span>
+    <img src="rob.jpg">
+    <div class="card-content">
+        <h3>Robin Strike</h3>
+        <p>Lead Robin to stop villains with precision attacks.</p>
+    </div>
+</div>
+
+
+<div class="card">
+    <span class="level">LEVEL 4</span>
+     <span class="lock">🔒</span>
+    <img src="boy.jpg">
+    <div class="card-content">
+        <h3>Beast Mode</h3>
+        <p>Transform into animals and defeat alien creatures.</p>
+    </div>
+</div>
+
+<div class="card">
+    <span class="level">LEVEL 5</span>
+     <span class="lock">🔒</span>
+    <img src="hack.jpg">
+    <div class="card-content">
+        <h3>Cyber Attack</h3>
+        <p>Hack systems and destroy enemy robots with Cyborg.</p>
+    </div>
+</div>
+
+
+<div class="card">
+    <span class="level">LEVEL 6</span>
+     <span class="lock">🔒</span>
+    <img src="demon.jpg">
+    <div class="card-content">
+        <h3>Team Clash</h3>
+        <p>Unite Titans and defeat a powerful boss.</p>
+    </div>
+</div>
+
+<div class="card">
+    <span class="level">LEVEL 7</span>
+     <span class="lock">🔒</span>
+    <img src="vecna.jpg">
+    <div class="card-content">
+        <h3>Dark Portal</h3>
+        <p>Close the portal before shadows escape.</p>
+    </div>
+</div>
+
+<div class="card">
+    <span class="level">LEVEL 8</span>
+     <span class="lock">🔒</span>
+    <img src="add.jpg">
+    <div class="card-content">
+        <h3>Galaxy War</h3>
+        <p>Fight enemies in deep space battle.</p>
+    </div>
+</div>
+
+
+<div class="card">
+    <span class="level">LEVEL 9</span>
+     <span class="lock">🔒</span>
+    <img src="hhh.jpg">
+    <div class="card-content">
+        <h3>Stealth Mission</h3>
+        <p>Use stealth to defeat enemies silently.</p>
+    </div>
+</div>
+
+
+<div class="card">
+    <span class="level">LEVEL 10</span>
+     <span class="lock">🔒</span>
+    <img src="gg.jpg">
+    <div class="card-content">
+        <h3>Wild Chaos</h3>
+        <p>Use animal power to survive chaos.</p>
+    </div>
+</div>
+
+<div class="card">
+    <span class="level">LEVEL 11</span>
+     <span class="lock">🔒</span>
+    <img src="george.jpg">
+    <div class="card-content">
+        <h3>Tech War</h3>
+        <p>Destroy enemy machines and drones.</p>
+    </div>
+</div>
+
+
+<div class="card">
+    <span class="level">LEVEL 12</span>
+     <span class="lock">🔒</span>
+    <img src="finalbattle.jpg">
+    <div class="card-content">
+        <h3>Final Battle</h3>
+        <p>Defeat the final boss and save the universe.</p>
+    </div>
+</div>
+
+</div>
+
+<div id="msgBox" style="
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,0.8);
+color:white;
+padding:12px 20px;
+border:1px solid cyan;
+border-radius:10px;
+display:none;
+font-family:Orbitron;
+z-index:9999;
+"></div>
+
+</body>
+
+</div>
+<audio id="bg-music" loop>
+  <source src="drumm.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById("bg-music");
+
+
+music.play().catch(() => {
+  console.log("Autoplay blocked");
+});
+
+
+document.addEventListener("click", () => {
+  music.play();
+  console.log("Music started after click");
+}, { once: true });
+
+
+
+const cards = document.querySelectorAll(".card");
+
+cards.forEach((card, index) => {
+    
+    if (index !== 0) {
+        card.style.cursor = "not-allowed";
+
+        card.addEventListener("click", () => {
+           showMessage("Complete Level 1 to unlock other levels!");
+        });
+    }
+});
+function showMessage(text){
+    const box = document.getElementById("msgBox");
+    box.innerText = text;
+    box.style.display = "block";
+
+    setTimeout(() => {
+        box.style.display = "none";
+    }, 2000);
+}
+</script>
+</body>
+</html>

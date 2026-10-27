@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Game | Cosmic Warfare</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-glow: #00ffff;
+            --accent-glow: #ffcc00;
+            --magenta-glow: #ff00ff;
+            --bg-dark: #020204;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+         
+            background: radial-gradient(circle at 50% 30%, #2a0a3a 0%, #100020 40%, #000 100%);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            position: relative;
+        }
+
+      
+        body::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, #00d2ff 0%, rgba(0, 210, 255, 0) 70%);
+            filter: blur(50px);
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(255, 0, 255, 0.05), transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 255, 0.05), transparent 40%);
+            z-index: 1;
+        }
+
+      
+        .stars {
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            z-index: 2;
+            opacity: 0.6;
+        }
+
+        
+        .shooting-star {
+            position: absolute;
+            top: 10%;
+            left: 70%;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1);
+            animation: shoot 5s linear infinite;
+            z-index: 2;
+        }
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
+        }
+
+        @keyframes shoot {
+            0% { transform: translateX(0) translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            30% { transform: translateX(-300px) translateY(150px); opacity: 0; }
+            100% { transform: translateX(-300px) translateY(150px); opacity: 0; }
+        }
+
+        
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            z-index: 100;
+        }
+
+        .header-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+       
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-glow);
+            text-shadow: 0 0 5px var(--primary-glow);
+        }
+
+        .login-btn {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .login-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        
+        .hero-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10% 0 10%; 
+            z-index: 20;
+            position: relative;
+        }
+
+        
+        .hero-left {
+            flex: 1.5;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end; 
+            height: 100%;
+            position: relative;
+        }
+
+       
+        .giant-warrior-placeholder {
+            width: 90%;
+            height: 90%;
+            background: radial-gradient(circle at 50% 40%, rgba(255, 0, 255, 0.2), rgba(0,0,0,0)); 
+            border-radius: 50%; 
+            position: relative;
+            filter: drop-shadow(0 0 40px var(--magenta-glow));
+            z-index: 5;
+        
+        }
+        
+       
+        .warrior-hands {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110%;
+            height: 100px;
+            background: rgba(10, 10, 10, 0.9);
+            border-top: 2px solid var(--primary-glow);
+            filter: blur(10px); 
+            border-radius: 20px 20px 0 0;
+            z-index: 4;
+        }
+
+        .floor-light {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #ff00ff;
+            border-radius: 50%;
+            filter: blur(5px) drop-shadow(0 0 10px #ff00ff);
+            opacity: 0.8;
+            z-index: 6;
+        }
+        .floor-light-1 { bottom: 65px; left: 20%; }
+        .floor-light-2 { bottom: 75px; left: 40%; }
+        .floor-light-3 { bottom: 65px; left: 70%; }
+
+
+        
+        .hero-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-left: 50px;
+        }
+
+        .large-headline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 90px; 
+            font-weight: 900;
+            line-height: 0.9;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.4), 4px 4px 0px rgba(0,0,0,0.8);
+        }
+   .giant-warrior-img {
+    width: 100%;
+    height: auto;
+    max-height: 75vh;
+    object-fit: contain;
+    z-index: 5;
+    filter: drop-shadow(0 0 30px #ff00ff);
+    position: relative;
+
+    bottom: 110px; 
+
+    animation: floatCharacter 4s ease-in-out infinite; 
+}
+        .highlight-blue { color: var(--primary-glow); text-shadow: 0 0 15px var(--primary-glow); }
+        .highlight-magenta { color: #ff00ff; text-shadow: 0 0 15px #ff00ff; }
+        .highlight-yellow { color: #ffcc00; text-shadow: 0 0 15px #ffcc00; }
+
+        .cta {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            padding: 15px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,255,255,0.4), inset 0 0 10px rgba(255,255,255,0.2);
+        }
+@keyframes floatCharacter {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-18px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+    <div class="shooting-star"></div>
+
+    <header class="header">
+        <div class="header-logo"><span>★</span> SPACE ADVENTURES</div>
+        <nav class="nav-links">
+            <a href="index.html" class="active">HOME</a>
+            <a href="adventure.html" >ADVENTURE</a>
+               <a href="game.html">GAMES</a>
+            <a href="help.html">HELP</a>
+        </nav>
+        <button class="login-btn">LOGIN</button>
+    </header>
+
+<br><br>
+    <div class="hero-container">
+        
+        <div class="hero-left">
+    <img src="titans.png" class="giant-warrior-img" alt="Character">
+    
+    <div class="warrior-hands"></div>
+    <div class="floor-light floor-light-1"></div>
+    <div class="floor-light floor-light-2"></div>
+    <div class="floor-light floor-light-3"></div>
+</div>
+        <div class="hero-right">
+            <h1 class="large-headline">
+                LEGENDS <span class="highlight-magenta">NEVER</span> <span class="highlight-blue">DIE</span> 
+            </h1>
+            
+            <a href="play.html" class="cta">START ADVENTURE</a>
+        </div>
+    </div>
+<audio id="bg-music" loop>
+  <source src="drumm.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function goToAdventure() {
+  localStorage.setItem("playMusic", "true");
+}
+
+const music = document.getElementById("bg-music");
+
+
+music.play().catch(() => {
+  console.log("Autoplay blocked");
+});
+
+
+document.addEventListener("click", () => {
+  music.play();
+  console.log("Music started after click");
+}, { once: true });
+</script>
+</html>
